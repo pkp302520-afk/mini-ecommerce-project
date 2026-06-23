@@ -4,31 +4,24 @@ export default function App() {
   const products = [
     {
       id: 1,
-      name: "Women Dress",
-      price: 999,
+      name: "Laptop",
+      price: 50000,
       image:
-        "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=300",
+        "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300",
     },
     {
       id: 2,
-      name: "Hand Bag",
-      price: 799,
+      name: "Phone",
+      price: 20000,
       image:
-        "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=300",
+        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300",
     },
     {
       id: 3,
-      name: "High Heels",
-      price: 1499,
+      name: "Headset",
+      price: 2000,
       image:
-        "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=300",
-    },
-    {
-      id: 4,
-      name: "Makeup Kit",
-      price: 599,
-      image:
-        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=300",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300",
     },
   ];
 
@@ -38,95 +31,99 @@ export default function App() {
     setCart([...cart, product]);
   };
 
-  const removeFromCart = () => {
-    if (cart.length > 0) {
-      setCart(cart.slice(0, -1));
-    }
+  const removeFromCart = (index) => {
+    const updated = [...cart];
+    updated.splice(index, 1);
+    setCart(updated);
   };
 
-  const totalPrice = cart.reduce(
-    (total, item) => total + item.price,
-    0
-  );
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <h1 style={{ textAlign: "center" }}>
-        Girls Fashion Store 🛍️
-      </h1>
-
-      <div
+    <div>
+      {/* Navbar */}
+      <nav
         style={{
-          textAlign: "center",
-          marginBottom: "20px",
+          background: "#222",
+          color: "white",
+          padding: "15px",
+          display: "flex",
+          justifyContent: "space-between",
         }}
       >
-        <h2>🛒 Cart Items: {cart.length}</h2>
-        <h3>Total: ₹{totalPrice}</h3>
+        <h2>🛒 Mini Store</h2>
+        <h2>Cart ({cart.length})</h2>
+      </nav>
 
-        <button
-          onClick={removeFromCart}
+      {/* Products */}
+      <div style={{ padding: "20px" }}>
+        <h2>Products</h2>
+
+        <div
           style={{
-            padding: "10px",
-            backgroundColor: "red",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))",
+            gap: "20px",
           }}
         >
-          Remove Item
-        </button>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          justifyContent: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        {products.map((product) => (
-          <div
-            key={product.id}
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: "10px",
-              padding: "15px",
-              width: "220px",
-              textAlign: "center",
-              boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-            }}
-          >
-            <img
-              src={product.image}
-              alt={product.name}
+          {products.map((product) => (
+            <div
+              key={product.id}
               style={{
-                width: "100%",
-                height: "250px",
-                objectFit: "cover",
+                border: "1px solid #ddd",
                 borderRadius: "10px",
-              }}
-            />
-
-            <h3>{product.name}</h3>
-            <p>₹{product.price}</p>
-
-            <button
-              onClick={() => addToCart(product)}
-              style={{
-                padding: "10px",
-                backgroundColor: "green",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
+                padding: "15px",
+                textAlign: "center",
               }}
             >
-              Add to Cart
-            </button>
-          </div>
-        ))}
+              <img
+                src={product.image}
+                alt={product.name}
+                width="150"
+                height="150"
+              />
+
+              <h3>{product.name}</h3>
+              <p>₹{product.price}</p>
+
+              <button onClick={() => addToCart(product)}>
+                Add To Cart
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Cart */}
+      <div style={{ padding: "20px" }}>
+        <h2>Cart Items</h2>
+
+        {cart.length === 0 ? (
+          <p>No items in cart</p>
+        ) : (
+          <>
+            {cart.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  border: "1px solid gray",
+                  padding: "10px",
+                  marginBottom: "10px",
+                }}
+              >
+                <p>
+                  {item.name} - ₹{item.price}
+                </p>
+
+                <button onClick={() => removeFromCart(index)}>
+                  Remove
+                </button>
+              </div>
+            ))}
+
+            <h3>Total = ₹{total}</h3>
+          </>
+        )}
       </div>
     </div>
   );
